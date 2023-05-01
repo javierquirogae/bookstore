@@ -2,11 +2,21 @@
 
 
 const { Client } = require("pg");
-const {DB_URI} = require("./config");
+let db;
 
-let db = new Client({
-  connectionString: DB_URI
-});
+if (process.env.NODE_ENV === "test") {
+  db = new Client({
+    host: "/var/run/postgresql/",
+    database: "books_test"
+  });
+} else {
+  db = new Client({
+    host: "/var/run/postgresql/",
+    database: "books"
+  });
+}
+
+
 
 db.connect();
 
